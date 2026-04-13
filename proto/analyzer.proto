@@ -1,1 +1,22 @@
-// Placeholder for analyzer gRPC proto definitions
+syntax = "proto3";
+
+package analyzer;
+
+service AnalyzerService {
+  rpc Analyze (NumberRequest) returns (NumberResponse);
+  rpc StreamFactors (NumberRequest) returns (stream FactorResponse);
+}
+
+message NumberRequest {
+  int32 number = 1;
+}
+
+message NumberResponse {
+  bool isPrime = 1;
+  repeated int32 factors = 2;
+  bool isFibonacci = 3;
+}
+
+message FactorResponse {
+  int32 factor = 1;
+}

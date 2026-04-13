@@ -1,1 +1,41 @@
-<!-- Placeholder for Node.js public HTML page -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>gRPC Demo</title>
+</head>
+<body>
+  <h2>Number Analyzer</h2>
+
+  <input id="number" placeholder="Enter number" />
+  <button onclick="analyze()">Analyze</button>
+  <button onclick="stream()">Stream Factors</button>
+
+  <h3>Result:</h3>
+  <pre id="result"></pre>
+
+  <script>
+    async function analyze() {
+      const num = document.getElementById("number").value;
+      const res = await fetch(`/api/analyze/${num}`);
+      const data = await res.json();
+      document.getElementById("result").innerText =
+        JSON.stringify(data, null, 2);
+    }
+
+    async function stream() {
+      const num = document.getElementById("number").value;
+      const res = await fetch(`/api/stream/${num}`);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      let result = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        result += decoder.decode(value);
+        document.getElementById("result").innerText = result;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,1 +1,3 @@
-# Placeholder for Python dependencies
+grpcio
+grpcio-tools
+flask

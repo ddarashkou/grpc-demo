@@ -1,1 +1,22 @@
-# Placeholder for docker-compose configuration
+version: "3.9"
+
+services:
+  python:
+    build: ./python
+    ports:
+      - "50051:50051"
+      - "5000:5000"
+    networks:
+      - grpc-net
+
+  node:
+    build: ./node
+    ports:
+      - "3000:3000"
+    depends_on:
+      - python
+    networks:
+      - grpc-net
+
+networks:
+  grpc-net:
