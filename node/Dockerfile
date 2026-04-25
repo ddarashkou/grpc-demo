@@ -1,9 +1,9 @@
 FROM node:18
 
 WORKDIR /app
-COPY package.json .
+COPY node/package.json .
 RUN npm install
 
-COPY . .
+COPY node/. .
 
 CMD ["node", "index.js"]

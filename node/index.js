@@ -3,7 +3,7 @@ const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const path = require("path");
 
-const packageDef = protoLoader.loadSync("../proto/analyzer.proto");
+const packageDef = protoLoader.loadSync("./proto/analyzer.proto");
 const grpcObject = grpc.loadPackageDefinition(packageDef);
 const analyzerPackage = grpcObject.analyzer;
 
@@ -11,6 +11,8 @@ const client = new analyzerPackage.AnalyzerService(
   "python:50051",
   grpc.credentials.createInsecure()
 );
+
+const benchmark = require("./benchmark");
 
 const app = express();
 
@@ -42,6 +44,15 @@ app.get("/api/stream/:number", (req, res) => {
   });
 
   call.on("end", () => res.end());
+});
+
+app.get("/api/benchmark", async (req, res) => {
+  try {
+    const result = await benchmark.runBenchmark();
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message || "Benchmark failed" });
+  }
 });
 
 app.listen(3000, () => {

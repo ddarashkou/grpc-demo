@@ -2,17 +2,28 @@ version: "3.9"
 
 services:
   python:
-    build: ./python
+    build:
+      context: .
+      dockerfile: python/Dockerfile
     ports:
       - "50051:50051"
       - "5000:5000"
+    volumes:
+      - ./python:/app
+      - ./proto:/app/proto
     networks:
       - grpc-net
 
   node:
-    build: ./node
+    build:
+      context: .
+      dockerfile: node/Dockerfile
     ports:
       - "3000:3000"
+    volumes:
+      - ./node:/app
+      - ./proto:/app/proto
+      - node_modules:/app/node_modules
     depends_on:
       - python
     networks:
@@ -20,3 +31,6 @@ services:
 
 networks:
   grpc-net:
+
+volumes:
+  node_modules:

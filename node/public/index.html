@@ -1,34 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>gRPC Demo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Number Analyzer • gRPC Demo</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="shortcut icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <h2>Number Analyzer</h2>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <img class="logo" src="/logo.svg" alt="Exadel AI logo" />
+        <div>
+          <h1>Number Analyzer: gRPC Demo</h1>
+        </div>
+      </div>
+      <nav>
+        <a class="active" href="/">Demo</a>
+        <a href="/benchmark.html">Benchmark</a>
+      </nav>
+    </header>
 
-  <input id="number" placeholder="Enter number" />
-  <button onclick="analyze()">Analyze</button>
-  <button onclick="stream()">Stream Factors</button>
+    <section class="hero">
+      <div class="hero-content">
+        <p>Enter a number and analyze it with a simple gRPC-backed API. You can also stream factor results in real time.</p>
+      </div>
+    </section>
 
-  <h3>Result:</h3>
-  <pre id="result"></pre>
+    <section class="card">
+      <div class="controls">
+        <input id="number" type="number" placeholder="Enter a number" />
+        <button onclick="analyze()">Analyze</button>
+        <button onclick="stream()">Stream</button>
+      </div>
+      <div class="result-panel" id="result">Results will appear here.</div>
+    </section>
+
+    <footer class="footer">
+      <div>Demo page powered by Express + gRPC.</div>
+      <div>Try the benchmark page to compare REST and gRPC performance.</div>
+    </footer>
+  </div>
 
   <script>
     async function analyze() {
       const num = document.getElementById("number").value;
+      if (!num) {
+        document.getElementById("result").innerText = "Please enter a number first.";
+        return;
+      }
+
       const res = await fetch(`/api/analyze/${num}`);
       const data = await res.json();
-      document.getElementById("result").innerText =
-        JSON.stringify(data, null, 2);
+      document.getElementById("result").innerText = JSON.stringify(data, null, 2);
     }
 
     async function stream() {
       const num = document.getElementById("number").value;
+      if (!num) {
+        document.getElementById("result").innerText = "Please enter a number first.";
+        return;
+      }
+
       const res = await fetch(`/api/stream/${num}`);
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
-
       let result = "";
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
