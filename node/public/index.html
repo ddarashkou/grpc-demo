@@ -59,21 +59,54 @@
 
     async function stream() {
       const num = document.getElementById("number").value;
+      const resultEl = document.getElementById("result");
+
       if (!num) {
-        document.getElementById("result").innerText = "Please enter a number first.";
+        resultEl.innerText = "Please enter a number first.";
         return;
       }
 
+      resultEl.innerHTML = "<strong>Streaming factors:</strong> ";
       const res = await fetch(`/api/stream/${num}`);
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
-      let result = "";
+      let buffer = "";
+
+      function createFactorChip(value) {
+        const chip = document.createElement("span");
+        chip.textContent = value;
+        chip.className = "stream-chip";
+        resultEl.appendChild(chip);
+      }
+
+      async function appendFactor(value) {
+        createFactorChip(value);
+        await new Promise((resolve) => setTimeout(resolve, 30));
+      }
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        result += decoder.decode(value);
-        document.getElementById("result").innerText = result;
+
+        buffer += decoder.decode(value, { stream: true });
+        const parts = buffer.split("\n");
+        buffer = parts.pop();
+
+        for (const part of parts) {
+          const trimmed = part.trim();
+          if (trimmed) {
+            await appendFactor(trimmed);
+          }
+        }
+      }
+
+      const finalValue = decoder.decode();
+      if (finalValue) {
+        buffer += finalValue;
+      }
+
+      if (buffer.trim()) {
+        await appendFactor(buffer.trim());
       }
     }
   </script>

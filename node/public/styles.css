@@ -305,6 +305,18 @@ body.benchmark .card {
   overflow-x: auto;
 }
 
+.stream-chip {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 0 8px 8px 0;
+  border-radius: 999px;
+  background: rgba(194, 249, 66, 0.16);
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
 @media (max-width: 760px) {
   .controls {
     grid-template-columns: 1fr;

@@ -20,26 +20,42 @@ class Analyzer(analyzer_pb2_grpc.AnalyzerServiceServicer):
 
     def StreamFactors(self, request, context):
         n = request.number
-        for i in range(1, n + 1):
-            if n % i == 0:
-                yield analyzer_pb2.FactorResponse(factor=i)
+        for factor in self.get_factors(n):
+            yield analyzer_pb2.FactorResponse(factor=factor)
 
     def is_prime(self, n):
         if n < 2:
             return False
-        for i in range(2, int(math.sqrt(n)) + 1):
+        if n % 2 == 0:
+            return n == 2
+        limit = int(math.sqrt(n))
+        for i in range(3, limit + 1, 2):
             if n % i == 0:
                 return False
         return True
 
     def get_factors(self, n):
-        return [i for i in range(1, n + 1) if n % i == 0]
+        if n <= 0:
+            return []
+
+        small = []
+        large = []
+        limit = int(math.sqrt(n))
+
+        for i in range(1, limit + 1):
+            if n % i == 0:
+                small.append(i)
+                other = n // i
+                if other != i:
+                    large.append(other)
+
+        return small + large[::-1]
 
     def is_fibonacci(self, n):
         def is_perfect_square(x):
             s = int(math.sqrt(x))
-            return s*s == x
-        return is_perfect_square(5*n*n + 4) or is_perfect_square(5*n*n - 4)
+            return s * s == x
+        return is_perfect_square(5 * n * n + 4) or is_perfect_square(5 * n * n - 4)
 
 
 @app.route("/analyze/<int:n>")
