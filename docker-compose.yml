@@ -11,6 +11,8 @@ services:
     volumes:
       - ./python:/app
       - ./proto:/app/proto
+    environment:
+      - HUGGINGFACE_API_TOKEN=${HUGGINGFACE_API_TOKEN:-}
     networks:
       - grpc-net
 
