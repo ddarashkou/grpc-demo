@@ -1,3 +1,6 @@
 grpcio
 grpcio-tools
 flask
+transformers
+torch
+accelerate

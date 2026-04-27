@@ -44,6 +44,11 @@ class AnalyzerServiceStub(object):
                 request_serializer=analyzer__pb2.NumberRequest.SerializeToString,
                 response_deserializer=analyzer__pb2.FactorResponse.FromString,
                 _registered_method=True)
+        self.ExplainText = channel.unary_stream(
+                '/analyzer.AnalyzerService/ExplainText',
+                request_serializer=analyzer__pb2.TextRequest.SerializeToString,
+                response_deserializer=analyzer__pb2.TextChunk.FromString,
+                _registered_method=True)
 
 
 class AnalyzerServiceServicer(object):
@@ -61,6 +66,12 @@ class AnalyzerServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ExplainText(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_AnalyzerServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -73,6 +84,11 @@ def add_AnalyzerServiceServicer_to_server(servicer, server):
                     servicer.StreamFactors,
                     request_deserializer=analyzer__pb2.NumberRequest.FromString,
                     response_serializer=analyzer__pb2.FactorResponse.SerializeToString,
+            ),
+            'ExplainText': grpc.unary_stream_rpc_method_handler(
+                    servicer.ExplainText,
+                    request_deserializer=analyzer__pb2.TextRequest.FromString,
+                    response_serializer=analyzer__pb2.TextChunk.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -129,6 +145,33 @@ class AnalyzerService(object):
             '/analyzer.AnalyzerService/StreamFactors',
             analyzer__pb2.NumberRequest.SerializeToString,
             analyzer__pb2.FactorResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ExplainText(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/analyzer.AnalyzerService/ExplainText',
+            analyzer__pb2.TextRequest.SerializeToString,
+            analyzer__pb2.TextChunk.FromString,
             options,
             channel_credentials,
             insecure,

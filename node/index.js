@@ -46,6 +46,35 @@ app.get("/api/stream/:number", (req, res) => {
   call.on("end", () => res.end());
 });
 
+// AI EXPLANATION streaming endpoint
+app.get("/api/explain/:text", (req, res) => {
+  const text = req.params.text;
+  const call = client.ExplainText({ text });
+
+  res.writeHead(200, {
+    "Content-Type": "text/plain",
+    "Transfer-Encoding": "chunked"
+  });
+
+  call.on("data", (chunk) => {
+    // Validate chunk has content before writing
+    if (chunk && chunk.content) {
+      res.write(chunk.content);
+    } else {
+      console.warn("Received chunk without content:", chunk);
+    }
+  });
+
+  call.on("error", (err) => {
+    console.error("Explain stream error:", err);
+    if (!res.writableEnded) {
+      res.status(500).end("Stream error: " + err.message);
+    }
+  });
+
+  call.on("end", () => res.end());
+});
+
 app.get("/api/benchmark", async (req, res) => {
   try {
     const result = await benchmark.runBenchmark();

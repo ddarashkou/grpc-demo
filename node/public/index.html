@@ -31,9 +31,10 @@
 
     <section class="card">
       <div class="controls">
-        <input id="number" type="number" placeholder="Enter a number" />
+        <input id="number" type="text" placeholder="Enter a number" />
         <button onclick="analyze()">Analyze</button>
         <button onclick="stream()">Stream</button>
+        <button onclick="explain()">✨ Explain with AI</button>
       </div>
       <div class="result-panel" id="result">Results will appear here.</div>
     </section>
@@ -107,6 +108,24 @@
 
       if (buffer.trim()) {
         await appendFactor(buffer.trim());
+      }
+    }
+
+    async function explain() {
+      const text = document.getElementById("number").value;
+      const resultEl = document.getElementById("result");
+
+      resultEl.innerHTML = "<strong>AI Explanation:</strong> ";
+      const res = await fetch(`/api/explain/${text}`);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        resultEl.innerHTML += chunk;
       }
     }
   </script>

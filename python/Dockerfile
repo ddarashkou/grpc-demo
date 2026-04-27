@@ -5,9 +5,9 @@ WORKDIR /app
 COPY python/requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY python/. .
+COPY python/ .
 COPY proto ./proto
 
 RUN python -m grpc_tools.protoc -I./proto --python_out=. --grpc_python_out=. ./proto/analyzer.proto
 
-CMD ["sh", "-c", "python -m grpc_tools.protoc -I./proto --python_out=. --grpc_python_out=. ./proto/analyzer.proto && python server.py"]
+CMD ["python", "server.py"]

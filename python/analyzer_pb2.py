@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0e\x61nalyzer.proto\x12\x08\x61nalyzer\"\x1f\n\rNumberRequest\x12\x0e\n\x06number\x18\x01 \x01(\x05\"G\n\x0eNumberResponse\x12\x0f\n\x07isPrime\x18\x01 \x01(\x08\x12\x0f\n\x07\x66\x61\x63tors\x18\x02 \x03(\x05\x12\x13\n\x0bisFibonacci\x18\x03 \x01(\x08\" \n\x0e\x46\x61\x63torResponse\x12\x0e\n\x06\x66\x61\x63tor\x18\x01 \x01(\x05\x32\x95\x01\n\x0f\x41nalyzerService\x12<\n\x07\x41nalyze\x12\x17.analyzer.NumberRequest\x1a\x18.analyzer.NumberResponse\x12\x44\n\rStreamFactors\x12\x17.analyzer.NumberRequest\x1a\x18.analyzer.FactorResponse0\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0e\x61nalyzer.proto\x12\x08\x61nalyzer\"\x1f\n\rNumberRequest\x12\x0e\n\x06number\x18\x01 \x01(\x05\"G\n\x0eNumberResponse\x12\x0f\n\x07isPrime\x18\x01 \x01(\x08\x12\x0f\n\x07\x66\x61\x63tors\x18\x02 \x03(\x05\x12\x13\n\x0bisFibonacci\x18\x03 \x01(\x08\" \n\x0e\x46\x61\x63torResponse\x12\x0e\n\x06\x66\x61\x63tor\x18\x01 \x01(\x05\"\x1c\n\tTextChunk\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\"\x1b\n\x0bTextRequest\x12\x0c\n\x04text\x18\x01 \x01(\t2\xd2\x01\n\x0f\x41nalyzerService\x12<\n\x07\x41nalyze\x12\x17.analyzer.NumberRequest\x1a\x18.analyzer.NumberResponse\x12\x44\n\rStreamFactors\x12\x17.analyzer.NumberRequest\x1a\x18.analyzer.FactorResponse0\x01\x12;\n\x0b\x45xplainText\x12\x15.analyzer.TextRequest\x1a\x13.analyzer.TextChunk0\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -37,6 +37,10 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_NUMBERRESPONSE']._serialized_end=132
   _globals['_FACTORRESPONSE']._serialized_start=134
   _globals['_FACTORRESPONSE']._serialized_end=166
-  _globals['_ANALYZERSERVICE']._serialized_start=169
-  _globals['_ANALYZERSERVICE']._serialized_end=318
+  _globals['_TEXTCHUNK']._serialized_start=168
+  _globals['_TEXTCHUNK']._serialized_end=196
+  _globals['_TEXTREQUEST']._serialized_start=198
+  _globals['_TEXTREQUEST']._serialized_end=225
+  _globals['_ANALYZERSERVICE']._serialized_start=228
+  _globals['_ANALYZERSERVICE']._serialized_end=438
 # @@protoc_insertion_point(module_scope)

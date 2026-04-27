@@ -5,6 +5,7 @@ package analyzer;
 service AnalyzerService {
   rpc Analyze (NumberRequest) returns (NumberResponse);
   rpc StreamFactors (NumberRequest) returns (stream FactorResponse);
+  rpc ExplainText (TextRequest) returns (stream TextChunk);
 }
 
 message NumberRequest {
@@ -19,4 +20,12 @@ message NumberResponse {
 
 message FactorResponse {
   int32 factor = 1;
+}
+
+message TextChunk {
+  string content = 1;
+}
+
+message TextRequest {
+  string text = 1;
 }
