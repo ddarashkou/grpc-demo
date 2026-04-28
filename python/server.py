@@ -43,19 +43,23 @@ class Analyzer(analyzer_pb2_grpc.AnalyzerServiceServicer):
         topic = request.text
         
         prompt = f"""
-          <|im_start|>system
-          You are a helpful senior backend engineer.
-          Keep answers short and practical.
-          <|im_end|>
+            <|im_start|>system
+            You are a senior backend engineer explaining concepts to JavaScript developers.
+            Rules:
+            - keep responses concise
+            - keep responses accurate
+            - use simple language
+            - include one practical example
+            - maximum 120 words
+            <|im_end|>
 
-          <|im_start|>user
-          Explain "{topic}" to a JavaScript developer.
-          Use simple language and understandable language.
-          Add some example where it can be used.
-          Keep response under 200 words.
-          <|im_end|>
+            <|im_start|>user
+            Explain this concept:
 
-          <|im_start|>assistant
+            {topic}
+            <|im_end|>
+
+            <|im_start|>assistant
           """
 
         inputs = tokenizer(prompt, return_tensors="pt")
@@ -65,7 +69,7 @@ class Analyzer(analyzer_pb2_grpc.AnalyzerServiceServicer):
         generation_kwargs = dict(
             **inputs,
             streamer=streamer,
-            max_new_tokens=60,
+            max_new_tokens=300,
             temperature=0.5,
             top_p=0.9,
             do_sample=True,
